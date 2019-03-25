@@ -14,9 +14,30 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        IotdHandler handler = new IotdHandler();
+        final IotdHandler2 handler = new IotdHandler2();
         //new myTask().execute();
-        handler.processFeed();
+        Thread t1 = new Thread(new Runnable()
+        {
+            public void run() {
+
+                try {
+
+                    handler.processFeed();
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        t1.start();
+        try {
+            t1.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         resetDisplay(handler.getTitle(), handler.getDate(), handler.getImage(), handler.getDescription());
     }
     public void resetDisplay(String title, String date, Bitmap image, StringBuffer description)
@@ -37,10 +58,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     private class myTask extends AsyncTask <Void,Void,Void>{
-        IotdHandler handler = new IotdHandler();
+        IotdHandler2 handler = new IotdHandler2();
         @Override
         protected Void doInBackground(Void... params){
-            handler.processFeed();
+            try {
+                handler.processFeed();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return null;
         }
 

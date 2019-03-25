@@ -34,7 +34,7 @@ public class IotdHandler extends DefaultHandler {
     private int date_count=0;
     private int image_count=0;
     private int description_count=0;
-    private String url = "http://www.nasa.gov/rss/dyn/image_of_the_day.rss";
+    private String url = "https://www.nasa.gov/rss/dyn/image_of_the_day.rss";
     private boolean inUrl = false;
     private boolean inTitle = false;
     private boolean inDescription = false;
@@ -49,28 +49,32 @@ public class IotdHandler extends DefaultHandler {
     private StringBuffer description = new StringBuffer();
     private String date = null;
 
+
     public void processFeed()
     {
         try{
             //added these two lines
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
 
-            SAXParserFactory factory = SAXParserFactory.newInstance();
-            SAXParser parser = factory.newSAXParser();
-            XMLReader reader = parser.getXMLReader();
-            reader.setContentHandler(this);
-            //made this URL object
-            URL urlObj = new URL(url);
-            //InputStream inputStream = new URL(url).openStream();
-            InputStream inputStream = urlObj.openConnection().getInputStream();
-            //System.out.println("check this out man :"+inputStream);
-            InputSource a =  new InputSource(inputStream);
-            //System.out.println("char stream data: "+a.getCharacterStream());
-            //Log.d(TAG,inputStream.toString());
-            reader.parse(a);
-            //reader.parse(new InputSource(inputStream));
-            //reader.parse(new InputSource(urlObj.openStream()));
+                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                StrictMode.setThreadPolicy(policy);
+
+                SAXParserFactory factory = SAXParserFactory.newInstance();
+                SAXParser parser = factory.newSAXParser();
+                XMLReader reader = parser.getXMLReader();
+                reader.setContentHandler(this);
+                //made this URL object
+                URL urlObj = new URL(url);
+                //InputStream inputStream = new URL(url).openStream();
+                InputStream inputStream = urlObj.openConnection().getInputStream();
+                //System.out.println("check this out man :"+inputStream);
+                InputSource a = new InputSource(inputStream);
+                //System.out.println("char stream data: "+a.getCharacterStream());
+                //Log.d(TAG,inputStream.toString());
+                reader.parse(a);
+                //reader.parse(new InputSource(inputStream));
+                //reader.parse(new InputSource(urlObj.openStream()));
+
+
         }
         catch (Exception e){
             System.out.println(new String("Exception GENERAL in processFeed"));
